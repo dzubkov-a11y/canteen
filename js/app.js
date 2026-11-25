@@ -41,16 +41,31 @@ function renderMenu(items){
     const price=document.createElement('span');price.className='dish-price';price.textContent=`${item.price} грн`;
     article.append(emoji,heading,description,price);resultsElement.append(article);
   }
-  if(items.length===0){const p=document.createElement('p');p.textContent='За обраними умовами страв не знайдено.';resultsElement.append(p);}
+  if(items.length===0){const p=document.createElement('p');p.textContent='Нічого не знайдено';resultsElement.append(p);}
   resultCount.textContent=`Знайдено ${items.length} із ${loadedMenu.length} страв.`;
 }
 function applyFilters(){
-  // TODO 1: отримайте текст пошуку (trim, toLowerCase).
-  // TODO 2: отримайте категорію, ціну та стан перемикача.
-  // TODO 3: використайте loadedMenu.filter(...) з УСІМА чотирма умовами.
-  // TODO 4: передайте результат до renderMenu(...).
-  // Тимчасовий виклик нижче замініть власною реалізацією:
-  renderMenu(loadedMenu);
+  const searchQuery=searchInput.value.trim().toLowerCase();
+  const selectedCategory=categoryFilter.value;
+  const maxPriceValue=priceFilter.value;
+  const maxPrice=maxPriceValue===''||maxPriceValue==='all'?null:Number(maxPriceValue);
+  const onlyVegetarian=vegetarianFilter.checked;
+  const filteredMenu=loadedMenu.filter(item=>{
+    const dishName=item.name.toLowerCase();
+    const matchesSearch=searchQuery==='' || dishName.includes(searchQuery);
+    const matchesCategory=selectedCategory==='all' || item.category===selectedCategory;
+    const matchesPrice=maxPrice===null || item.price<=maxPrice;
+    const matchesVegetarian=!onlyVegetarian || item.vegetarian;
+    return matchesSearch && matchesCategory && matchesPrice && matchesVegetarian;
+  });
+  renderMenu(filteredMenu);
+}
+function resetFilters(){
+  searchInput.value='';
+  categoryFilter.value='all';
+  priceFilter.value='all';
+  vegetarianFilter.checked=false;
+  applyFilters();
 }
 async function loadMenu(shouldFail=false){
   if(isLoading)return;
@@ -72,7 +87,10 @@ async function loadMenu(shouldFail=false){
     resultsElement.setAttribute('aria-busy','false');
   }
 }
-// TODO 5: підключіть події input/change до applyFilters().
-// TODO 6: реалізуйте скидання всіх чотирьох умов.
 loadButton.addEventListener('click',()=>loadMenu(false));
 errorButton.addEventListener('click',()=>loadMenu(true));
+searchInput.addEventListener('input',applyFilters);
+categoryFilter.addEventListener('change',applyFilters);
+priceFilter.addEventListener('change',applyFilters);
+vegetarianFilter.addEventListener('change',applyFilters);
+resetButton.addEventListener('click',resetFilters);
