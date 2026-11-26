@@ -42,33 +42,6 @@ select:focus-visible {
     outline-offset: 3px
 }
 
-.menu-filter {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: 18px;
-    flex-wrap: wrap
-}
-
-.menu-filter label {
-    font-weight: 700
-}
-
-.menu-filter-select {
-    min-height: 44px;
-    padding: 8px 36px 8px 12px;
-    border: 1px solid #c5d2c4;
-    border-radius: 10px;
-    background: #fff;
-    color: var(--ink);
-    font: inherit
-}
-
-.menu-filter-select:disabled {
-    opacity: .55;
-    cursor: not-allowed
-}
-
 .container {
     width: min(1140px, calc(100% - 40px));
     margin-inline: auto
@@ -428,6 +401,12 @@ h2 {
     gap: 16px
 }
 
+.empty-state {
+    grid-column: 1 / -1;
+    color: var(--muted);
+    margin: 8px 0 0
+}
+
 .dish {
     background: white;
     border: 1px solid #d9e5d4;
@@ -592,11 +571,63 @@ h2 {
         padding-block: 15px
     }
 }
+
 /* Місія 04: елементи керування фільтрами */
-.filters-panel{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:20px 0;align-items:end}
-.filter-field{display:flex;flex-direction:column;gap:7px}.filter-field label{font-weight:700}
-.filter-field input,.filter-field select{width:100%;min-height:44px;padding:8px 12px;border:1px solid #c5d2c4;border-radius:10px;background:white;color:var(--ink);font:inherit}
-.filter-check{display:flex;gap:9px;align-items:center;font-weight:700;min-height:44px}
-.filter-check input{width:18px;height:18px}.filters-panel :disabled{opacity:.6;cursor:not-allowed}
-.filters-panel :focus-visible{outline:3px solid #e5a52e;outline-offset:2px}
-@media(max-width:760px){.filters-panel{grid-template-columns:1fr}}
+.filters-panel {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 20px 0;
+    align-items: end;
+}
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.filter-field label {
+    font-weight: 700;
+}
+
+.filter-field input,
+.filter-field select {
+    width: 100%;
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid #c5d2c4;
+    border-radius: 10px;
+    background: white;
+    color: var(--ink);
+    font: inherit;
+}
+
+.filter-check {
+    display: flex;
+    gap: 9px;
+    align-items: center;
+    font-weight: 700;
+    min-height: 44px;
+}
+
+.filter-check input {
+    width: 18px;
+    height: 18px;
+}
+
+.filters-panel :disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.filters-panel :focus-visible {
+    outline: 3px solid #e5a52e;
+    outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+    .filters-panel {
+        grid-template-columns: 1fr;
+    }
+}
